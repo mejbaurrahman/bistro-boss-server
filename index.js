@@ -26,12 +26,20 @@ async function run() {
     const database = client.db("bistroDb");
     const menuCollection = database.collection("menu");
     const cartCollection = database.collection("cart");
+    const userCollection = database.collection("user");
 
     app.get('/menu', async(req, res)=>{
         const result = await menuCollection.find({}).toArray();
         res.send(result);
     })
 
+    // user apis
+   app.post('/users', async(req, res)=>{
+    const data = req.body;
+    const result = await userCollection.insertOne(data);
+    res.send(result)
+   })
+    //cart apis
     app.get('/carts', async(req, res)=>{
 
       const email= req.query.email;
@@ -48,7 +56,7 @@ async function run() {
       res.send(result)
     })
 
-    //cart post 
+    
     app.post('/carts', async(req, res)=>{
       const data = req.body;
       
