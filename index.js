@@ -36,8 +36,15 @@ async function run() {
     // user apis
    app.post('/users', async(req, res)=>{
     const data = req.body;
-    const result = await userCollection.insertOne(data);
-    res.send(result)
+    const query = {email: data.email}
+    const r = await userCollection.findOne(query);
+    if(r){
+      res.send("user already exists")
+    }else{
+      const result = await userCollection.insertOne(data);
+      res.send(result)
+    }
+    
    })
     //cart apis
     app.get('/carts', async(req, res)=>{
