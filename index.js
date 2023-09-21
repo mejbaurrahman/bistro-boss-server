@@ -34,6 +34,23 @@ async function run() {
     })
 
     // user apis
+    app.get('/users', async(req, res)=>{
+      const result = await userCollection.find({}).toArray();
+      res.send(result)
+    })
+    app.patch('/users/admin', async(req, res)=>{
+        
+        const email = req.query.email
+        const query= {email: email}
+        const updateDoc ={
+          $set: {
+            role: 'admin',
+          }
+        }
+
+        const result = await userCollection.updateOne(query, updateDoc);
+        res.send(result)
+    })
    app.post('/users', async(req, res)=>{
     const data = req.body;
     const query = {email: data.email}
